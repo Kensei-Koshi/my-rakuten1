@@ -2,10 +2,40 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>京都ホテル検索アプリ</title>
+    <title>京都ホテル検索テスト</title>
 </head>
 <body>
-    <h1>京都のお得なホテル検索ツール</h1>
-    <p>このページは楽天トラベルAPIを利用したホテル検索アプリの案内ページです。</p>
+    <h1>京都ホテル検索 APIテスト</h1>
+    <button id="search-btn">ホテルを検索する</button>
+    
+    <div id="result" style="margin-top: 20px; white-space: pre-wrap; background: #f0f0f0; padding: 10px;">
+        ここに結果が表示されます。
+    </div>
+
+    <script>
+        // ⚠️ ご自身のIDとキーに書き換えてください
+        const APPLICATION_ID = 'ac6e3119-efe6-4163-8c68-421ebadcb26e'; 
+        const ACCESS_KEY = 'pk_CZFidKbvs4mjhjbnQ0wERbvBRb7T1CV5Pe7va4bLq5e';
+
+        document.getElementById('search-btn').addEventListener('click', () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = '検索中...';
+
+            // キーワード検索APIのURL（新ドメイン仕様）
+            const url = `https://rakuten.co.jp{APPLICATION_ID}&accessKey=${ACCESS_KEY}&keyword=京都&format=json`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // 取得成功したら中身を画面に表示
+                    resultDiv.innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('エラー:', error);
+                    resultDiv.innerText = '通信エラーが発生しました。';
+                });
+        });
+    </script>
 </body>
 </html>
